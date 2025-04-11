@@ -18,15 +18,46 @@ templateEngineOverride: md, njk
     } else if (params.has('recovery_token')) {
       window.netlifyIdentity.recover(params.get('recovery_token'))
         .then(() => window.location.replace('/admin/'));
-    } else {
-      window.location.replace('/admin/');
     }
 
     window.netlifyIdentity.init();
-  } else {
-    window.location.replace('/admin/');
   }
 </script>
 
-<h1 style="text-align: center; margin-top: 20vh;">🚀 Procesando tu cuenta, por favor espera...</h1>
-<p style="text-align: center;">Estamos configurando tu acceso, en unos segundos serás redirigido.</p>
+<header class="tdbc-hero" style="text-align: center; margin-top: 2rem;">
+  <div class="tdbc-container">
+    <h1 class="tdbc-ink--primary tdbc-mb-none">{{ meta.siteName }}</h1>
+    <h2 class="tdbc-lead tdbc-content-maxlength tdbc-ink--gray tdbc-mt-md tdbc-mx-auto">
+      {{ meta.siteDescription }}
+    </h2>
+    <p>Bienvenido a nuestra tienda exclusiva. Explora nuestros productos seleccionados.</p>
+  </div>
+</header>
+
+<main class="tdbc-container">
+
+  <section style="margin: 3rem 0;">
+    <h2 style="text-align: center;">🛒 Productos disponibles</h2>
+    <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; list-style: none; padding: 0;">
+      {% for product in collections.products %}
+      <li style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-align: center;">
+        <h3>{{ product.data.title }}</h3>
+        {% if product.data.image %}
+          <img src="{{ product.data.image }}" alt="{{ product.data.title }}" style="max-width: 100%; height: auto; border-radius: 4px;" />
+        {% endif %}
+        <p>{{ product.data.description }}</p>
+        <p style="font-weight: bold;">💵 Precio: ${{ product.data.price }}</p>
+      </li>
+      {% else %}
+      <p style="text-align: center; width: 100%;">No hay productos disponibles aún.</p>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section style="margin-top: 4rem;">
+    <h3 class="tdbc-h4">Acerca de esta tienda</h3>
+    <p>Esta es una tienda creada con Eleventy, Netlify y Decap CMS. Desde aquí puedes gestionar productos y verlos publicados automáticamente.</p>
+    <p>Accede al panel de administración aquí: <a href="/admin">/admin</a></p>
+  </section>
+
+</main>
