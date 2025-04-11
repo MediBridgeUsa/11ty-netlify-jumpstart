@@ -19,11 +19,30 @@
           }
         });
 
-        // 👇 Este bloque escucha recovery tokens
         const params = new URLSearchParams(window.location.hash.substring(1));
+
+        // 👇 Procesar token de invitación
+        if (params.has('invite_token')) {
+          window.netlifyIdentity
+            .acceptInvite(params.get('invite_token'))
+            .then(() => {
+              document.location.href = '/admin/';
+            });
+        }
+
+        // 👇 Procesar token de recuperación
         if (params.has('recovery_token')) {
           window.netlifyIdentity
             .recover(params.get('recovery_token'))
+            .then(() => {
+              document.location.href = '/admin/';
+            });
+        }
+
+        // 👇 Procesar token de confirmación
+        if (params.has('confirmation_token')) {
+          window.netlifyIdentity
+            .confirm(params.get('confirmation_token'))
             .then(() => {
               document.location.href = '/admin/';
             });
